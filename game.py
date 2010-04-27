@@ -3,11 +3,17 @@
 import random
 import rabbyt
 import simage
+import sprite
+
+import string
 import math
 import time
+import sys
+
 import app
 
-from pyglet import clock
+import pyglet
+from pyglet import clock, font
 
 #rabbyt.set_default_attribs()
 
@@ -26,35 +32,67 @@ class SImage(simage.SImage):
 
     def step(self):
         return
-        self.sp.x += math.cos(self.d) * self.speed
-        self.sp.y += math.sin(self.d) * self.speed
 
-        diff = normal(self.gd - self.d)
-        if abs(diff) < 10:
-            self.gd = random.uniform(0, 360)
-        else:
-            self.d += diff/1000.0
 
+class SpriteText(rabbyt.BaseSprite):
+    def __init__(self, ft, text="", *args, **kwargs):
+        rabbyt.BaseSprite.__init__(self, *args, **kwargs)
+        self._text = font.Text(ft, text,
+            halign=font.Text.CENTER,
+            valign=font.Text.CENTER,
+            )
+
+    def set_text(self, text):
+        self._text.text = text
+
+    def render_after_transform(self):
+        self._text.color = self.rgba
+        self._text.draw()
+
+    def draw(self):
+        self.render()
+
+    def step(self):
+        pass
 
 class Main(app.App):
     def __init__(self):
         super(Main, self).__init__()
-        #clock.schedule_interval(self.new_triangle, 0.25)
         clock.schedule(rabbyt.add_time)
-
-        '''
+        self.ft = font.load('Helvetica', self.win.width/20)
         self.pos = 0,0
-        w = self.win.width/10.0
-        h = self.win.height/10.0
-        for i in range(11):
-            s = SImage('ring.png', i*w, i*h)
-            self.world.objects.append(s)
-            '''
+
+    def on_key_press(self, symbol, mods):
+
+        if symbol == pyglet.window.key.ESCAPE:
+            sys.exit(0)
+        try:
+            s = chr(symbol)
+        except (ValueError, OverflowError):
+            return
+        if s in string.ascii_letters:
+            self.make_string(s.upper())
+
+    def make_string(self, string):
+        x = random.uniform(0, self.win.width)
+        y = random.uniform(0, self.win.height)
+        s = SpriteText(self.ft, string)
+        s.rgba = rcolor()
+        s.x = rabbyt.lerp(x, random.uniform(0, self.win.width), dt=1)
+        s.y = rabbyt.lerp(y, random.uniform(0, self.win.height), dt=1)
+        s.rot = rabbyt.lerp(start=0, end=360, dt=1)
+        s.scale = rabbyt.lerp(.5, 1, dt=1)
+        self.world.objects.append(s)
+        def tmp(dt):
+            s.alpha = rabbyt.lerp(1.0, 0, dt=2)
+            clock.schedule_once(lambda dt:self.world.objects.remove(s),2)
+        clock.schedule_once(tmp, 2)
 
     def on_mouse_press(self, x, y, button, mods):
         self.pos = x,y
+        self.add(x, y)
 
-    def on_mouse_drag(self, x, y, dx, dy, buttons, mods):
+    def on_mouse_motion(self, x, y, buttons, mods):
         if dst(x-self.pos[0], y-self.pos[1]) > 15:
             self.add(x,y)
             self.pos = x,y
@@ -65,17 +103,12 @@ class Main(app.App):
         s.sp.alpha = rabbyt.lerp(end=0, dt=1)
         self.world.objects.append(s)
         clock.schedule_once(lambda dt:self.world.objects.remove(s), 1)
-        '''
-        s.sp.scale = rabbyt.lerp(start=.5, end=1.0, dt=.5, extend='reverse')
-        def tmp(dt):
-            s.sp.scale = rabbyt.lerp(end=5.0, dt=.3)
-            s.sp.alpha = rabbyt.lerp(start=1.0, end=0, dt=.3)
-            clock.schedule_once(lambda dt:self.world.objects.remove(s), .3)
-        clock.schedule_once(tmp, 1)
-        '''
 
     def step(self):
         pass
+
+def rcolor():
+    return tuple(random.uniform(0,255) for i in (0,0,0)) + (1,)
 
 def dst(x,y):
     return math.sqrt(x**2+y**2)

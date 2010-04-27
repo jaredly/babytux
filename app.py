@@ -32,12 +32,11 @@ class App(object):
 
     def __init__(self):
         self.world = World()
-        self.win = pyglet.window.Window(fullscreen=False, vsync=True)
+        self.win = pyglet.window.Window(fullscreen=True, vsync=True)
 
-        self.win.on_mouse_drag = self.on_mouse_drag
-        self.win.on_mouse_motion = self.on_mouse_motion
-        self.win.on_mouse_press = self.on_mouse_press
-        self.win.on_mouse_release = self.on_mouse_release
+        for i in dir(self):
+            if i.startswith('on_'):
+                setattr(self.win, i, getattr(self, i))
 
         self.camera = Camera(self.win, zoom=100.0)
         self.hud = Hud(self.win)
