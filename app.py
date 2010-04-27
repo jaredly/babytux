@@ -13,7 +13,7 @@ class Hud(object):
         helv = font.load('Helvetica', win.width / 15.0)
         self.text = font.Text(
             helv,
-            'Hello, World!',
+            'Hello!',
             x=win.width / 2,
             y=win.height / 2,
             halign=font.Text.CENTER,

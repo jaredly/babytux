@@ -15,8 +15,6 @@ import app
 import pyglet
 from pyglet import clock, font
 
-#rabbyt.set_default_attribs()
-
 def normal(ang):
     ang %= 360
     if ang > 180:
@@ -26,13 +24,55 @@ def normal(ang):
 class SImage(simage.SImage):
     def __init__(self, *a):
         simage.SImage.__init__(self, *a)
-        self.speed = 3
-        self.d = 0
-        self.gd = 0
 
     def step(self):
         return
 
+
+class FireWork(sprite.Sprite):
+    def __init__(self, x, y):
+        dst = 50
+        num = 10
+        dt = .6
+        fscale = 1
+        by = 360.0/num
+        self.images = []
+        for i in range(num):
+            ang = i*by
+            rad = ang / 180.0 * math.pi
+            s = simage.SImage('wedge.png', x, y)
+            s.sp.x = rabbyt.lerp(end=math.cos(rad)*dst*fscale+x, dt=dt)
+            s.sp.y = rabbyt.lerp(end=math.sin(rad)*dst*fscale+y, dt=dt)
+            '''cool things:
+            #1
+            s.sp.rot = ang - 90
+
+            #2
+            s.sp.rot = ang
+
+            #3
+            s.sp.rot = ang + 90
+            '''
+            s.sp.rot = rabbyt.lerp(ang, ang - 90.0, dt=dt/2)
+            s.sp.rot = rabbyt.lerp(ang + 90, ang - 90.0, dt=dt)
+            #s.sp.rot = ang - 90.0
+            s.sp.scale = rabbyt.lerp(0,fscale,dt=dt)
+            self.images.append(s)
+        self.on = True
+        def tmp(dt):
+            l = rabbyt.lerp(1.0,0.0,dt=dt)
+            for i in self.images:
+                i.sp.alpha = l#rabbyt.lerp(1.0,0.0,dt=1)
+            clock.schedule_once(self.off, dt)
+        clock.schedule_once(tmp, dt/2)
+
+    def off(self, dt):
+        self.on = False
+
+    def draw(self):
+        if not self.on:return
+        for i in self.images:
+            i.draw()
 
 class SpriteText(rabbyt.BaseSprite):
     def __init__(self, ft, text="", *args, **kwargs):
@@ -90,7 +130,12 @@ class Main(app.App):
 
     def on_mouse_press(self, x, y, button, mods):
         self.pos = x,y
-        self.add(x, y)
+        self.world.objects.append(FireWork(x,y))
+
+    def on_mouse_drag(self, x, y, dx, dy, buttons, mods):
+        if dst(x-self.pos[0], y-self.pos[1]) > 15:
+            self.add(x,y)
+            self.pos = x,y
 
     def on_mouse_motion(self, x, y, buttons, mods):
         if dst(x-self.pos[0], y-self.pos[1]) > 15:
