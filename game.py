@@ -3,6 +3,8 @@
 from random import uniform
 import math
 
+import rabbyt
+
 from pyglet import clock, font, image, window
 from pyglet.gl import *
 
@@ -90,23 +92,36 @@ class Circle(sprite.Sprite):
         '''
         
         gluQuadricDrawStyle(self.q, GLU_FILL)# self.style)
-
         gluDisk(self.q, 0, self.rad, 60, 1) # gluDisk(quad, inner, outer, slices, loops)
-            
         glPopMatrix()
+
+class SImage(sprite.Sprite):
+
+    def __init__(self, image, x, y):
+        self.sp = rabbyt.Sprite(image)
+        self.sp.x = x
+        self.sp.y = y
+
+    def draw(self):
+        glEnable(GL_BLEND)
+        self.sp.render()
+
+    def step(self):
+        self.sp.rot += 10
+        pass
 
 class Main(app.App):
     def __init__(self):
         super(Main, self).__init__()
         clock.schedule_interval(self.new_triangle, 0.25)
-        self.rimg = pyglet.image.load('ring.png')
-        ps = pyglet.sprite.Sprite
-        ps.step = lambda self:setattr(self,'rotation',self.rotation+5)
+
+        #car = SImage('ring.png',0,0)
+        #self.world.objects.append(car)
+
         w = self.win.width/10.0
         h = self.win.height/10.0
         for i in range(11):
-            s = ps(self.rimg,w*i-50,h*i-50)
-            s.rotation = i*36
+            s = SImage('ring.png', i*w, i*h)
             self.world.objects.append(s)
 
     def new_triangle(self, dt):
