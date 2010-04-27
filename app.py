@@ -20,12 +20,15 @@ class Hud(object):
             valign=font.Text.CENTER,
             color=(1, 1, 1, 0.5),
         )
+        h = font.load('Helvetica', 15)
+        self.help = font.Text(h, 'to exit: type "smash" and press escape', x=10, y=win.height-25, color=(1,1,1,.5))
         self.fps = clock.ClockDisplay()
 
     def draw(self):
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
         self.text.draw()
+        self.help.draw()
         self.fps.draw()
 
 class App(object):

@@ -101,11 +101,22 @@ class Main(app.App):
         clock.schedule(rabbyt.add_time)
         self.ft = font.load('Helvetica', self.win.width/20)
         self.pos = 0,0
+        self.key_buffer = []
 
     def on_key_press(self, symbol, mods):
+        self.key_buffer.append(symbol)
+        self.key_buffer = self.key_buffer[-6:]
 
-        if symbol == pyglet.window.key.ESCAPE:
-            sys.exit(0)
+        code = 'smash'
+        if len(self.key_buffer) == 6:
+            for key, char in zip(self.key_buffer, code):
+                if key != ord(char):
+                    break
+            else:
+                if self.key_buffer[-1] == pyglet.window.key.ESCAPE:
+                    sys.exit(0)
+        #if symbol == pyglet.window.key.ESCAPE:
+        #    sys.exit(0)
         try:
             s = chr(symbol)
         except (ValueError, OverflowError):
