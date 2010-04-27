@@ -17,7 +17,7 @@ class Camera(object):
         glLoadIdentity()
         widthRatio = self.win.width / self.win.height
         look = 0, self.win.width, 0, self.win.height
-        look = self.scale(look, 5)
+        look = self.scale(look, 1)
         gluOrtho2D(*look)
         glMatrixMode(GL_MODELVIEW)
         '''

@@ -1,150 +1,86 @@
 #!/usr/bin/env python
 
-from random import uniform
-import math
-
+import random
 import rabbyt
+import simage
+import math
+import time
+import app
 
-from pyglet import clock, font, image, window
-from pyglet.gl import *
+from pyglet import clock
 
-import app,world,sprite,camera
+#rabbyt.set_default_attribs()
 
-class Image(sprite.Sprite):
-    def __init__(self, image, x, y, size):
-        self.x=x
-        self.y=y
-        self.size=size
-        self.image = pyglet.image.load(image)
+def normal(ang):
+    ang %= 360
+    if ang > 180:
+        ang -= 360
+    return ang
 
-    def draw(self):
-        self.image.blit(self.x, self.y, 0)
-
-class Triangle(sprite.Sprite):
-    
-    def __init__(self, x, y, size, rot):
-        self.x = x
-        self.y = y
-        self.size = size
-        self.rot = rot
+class SImage(simage.SImage):
+    def __init__(self, *a):
+        simage.SImage.__init__(self, *a)
+        self.speed = 3
+        self.d = 0
+        self.gd = 0
 
     def step(self):
-        self.rot += 10.0/self.size
+        return
+        self.sp.x += math.cos(self.d) * self.speed
+        self.sp.y += math.sin(self.d) * self.speed
 
-    def draw(self):
-
-        glLoadIdentity()
-        glTranslatef(self.x, self.y, 0.0)
-        glRotatef(self.rot, 0, 0, 1)
-        glScalef(self.size, self.size, 1.0)
-
-        glColor4f(1.0, 0.0, 0.0, 0.0)
-        pyglet.graphics.draw_indexed(3, pyglet.gl.GL_TRIANGLES,
-                [0, 1, 2],
-                ('v2f', (0.0, 0.5,
-                         0.2, -0.5,
-                        -0.2, -0.5))
-            )
-
-        '''
-        glBegin(GL_TRIANGLES)
-        glVertex2f(0.0, 0.5)
-        glColor4f(0.0, 0.0, 1.0, 1.0)
-        glVertex2f(0.2, -0.5)
-        glColor4f(0.0, 0.0, 1.0, 1.0)
-        glVertex2f(-0.2, -0.5)
-        glEnd()
-        '''
-
-class Circle(sprite.Sprite):
-
-    def __init__(self, x, y, rad, color, lw, lc):
-        self.x = x
-        self.y = y
-        self.z = 0
-        self.rad = rad
-        self.color = color
-        self.lw = lw
-        self.lc = lc
-        self.q = gluNewQuadric()
-
-        self.tick = 0
-
-    def step(self):
-        self.tick += 30
-        self.z = math.sin(math.pi * self.tick/180.0)
-
-    def draw(self):
-        
-        glColor4f(*self.color)
-        glPushMatrix()
-
-        glTranslatef(self.x, self.y, -self.z)
-        #glRotatef(self.rot, 0, 0, 0.1)
-
-        if self.rad< 1 : self.rad= 1
-        '''
-        if self.lw:
-            inner = self.rad- self.lw # outline width
-            if inner < 0: inner=0
+        diff = normal(self.gd - self.d)
+        if abs(diff) < 10:
+            self.gd = random.uniform(0, 360)
         else:
-             inner = 0 # filled
-        '''
-        
-        gluQuadricDrawStyle(self.q, GLU_FILL)# self.style)
-        gluDisk(self.q, 0, self.rad, 60, 1) # gluDisk(quad, inner, outer, slices, loops)
-        glPopMatrix()
+            self.d += diff/1000.0
 
-class SImage(sprite.Sprite):
-
-    def __init__(self, image, x, y):
-        self.sp = rabbyt.Sprite(image)
-        self.sp.x = x
-        self.sp.y = y
-
-    def draw(self):
-        glEnable(GL_BLEND)
-        self.sp.render()
-
-    def step(self):
-        self.sp.rot += 10
-        pass
 
 class Main(app.App):
     def __init__(self):
         super(Main, self).__init__()
-        clock.schedule_interval(self.new_triangle, 0.25)
+        #clock.schedule_interval(self.new_triangle, 0.25)
+        clock.schedule(rabbyt.add_time)
 
-        #car = SImage('ring.png',0,0)
-        #self.world.objects.append(car)
-
+        '''
+        self.pos = 0,0
         w = self.win.width/10.0
         h = self.win.height/10.0
         for i in range(11):
             s = SImage('ring.png', i*w, i*h)
             self.world.objects.append(s)
+            '''
 
-    def new_triangle(self, dt):
-        return
-        if len(self.world.objects)>20:return
+    def on_mouse_press(self, x, y, button, mods):
+        self.pos = x,y
 
-        x = uniform(0.0, self.win.width/2)
-        y = uniform(0.0, self.win.height/2)
-        size = uniform(1.0, 100.0)
-        rot = uniform(0.0, 360.0)
-        tri = pyglet.sprite.Sprite(self.rimg, x, y)
-        tri.step = lambda:None
-        #tri = Image('ring.png', x, y, size)
-        #tri = Triangle(x, y, size, rot)
-        #tri = Circle(x, y, size, (100,200,0,1), 0, 0)#Triangle(x, y, size, rot)
-        self.world.objects.append(tri)
+    def on_mouse_drag(self, x, y, dx, dy, buttons, mods):
+        if dst(x-self.pos[0], y-self.pos[1]) > 15:
+            self.add(x,y)
+            self.pos = x,y
 
+    def add(self, x, y):
+        s = SImage('ring.png', x, y)
+        s.sp.scale = rabbyt.lerp(start=.1, end=2, dt=1)
+        s.sp.alpha = rabbyt.lerp(end=0, dt=1)
+        self.world.objects.append(s)
+        clock.schedule_once(lambda dt:self.world.objects.remove(s), 1)
+        '''
+        s.sp.scale = rabbyt.lerp(start=.5, end=1.0, dt=.5, extend='reverse')
+        def tmp(dt):
+            s.sp.scale = rabbyt.lerp(end=5.0, dt=.3)
+            s.sp.alpha = rabbyt.lerp(start=1.0, end=0, dt=.3)
+            clock.schedule_once(lambda dt:self.world.objects.remove(s), .3)
+        clock.schedule_once(tmp, 1)
+        '''
 
+    def step(self):
+        pass
 
+def dst(x,y):
+    return math.sqrt(x**2+y**2)
 
 if __name__=='__main__':
-    app = Main()
-    app.mainLoop()
-
+    Main().mainLoop()
 
 # vim: et sw=4 sts=4
