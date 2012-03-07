@@ -25,6 +25,11 @@ Baby TUX requires:
 
 If you are running this on a Debian based Linux disto, you will need to install: python-dev, mesa-common-dev, and libglu1-mesa-dev
 
+Running app
+-----------
+To run the app, enter: *python game.py*
+
+
 .. _babysmash: http://www.hanselman.com/babysmash/
 .. _alphababy: http://alphababy.sourceforge.net/
 .. _Pyglet: http://www.pyglet.org/
