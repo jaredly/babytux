@@ -123,6 +123,8 @@ class Main(app.App):
             return
         if s in string.ascii_letters:
             self.make_string(s.upper())
+        elif s in string.digits:
+            self.make_string(s)
 
     def make_string(self, string):
         x = random.uniform(0, self.win.width)
