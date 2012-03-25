@@ -120,11 +120,17 @@ class Main(app.App):
         try:
             s = chr(symbol)
         except (ValueError, OverflowError):
+            # We do this to deal with <ENTER>, <ESC>, <SHIFT>, <F1-F12>, <ALT>,
+            # <CTRL>, etc.
+            self.make_animations() 
             return
+
         if s in string.ascii_letters:
             self.make_string(s.upper())
         elif s in string.digits:
             self.make_string(s)
+        else: # work with space, puncutations, etc
+            self.make_animations()
 
     def make_string(self, string):
         x = random.uniform(0, self.win.width)
@@ -140,6 +146,13 @@ class Main(app.App):
             s.alpha = rabbyt.lerp(1.0, 0, dt=2)
             clock.schedule_once(lambda dt:self.world.objects.remove(s),2)
         clock.schedule_once(tmp, 2)
+
+    def make_animations(self):
+        # For now, we just have firework but later on, we can display
+        # shapes, etc. 
+        x = random.uniform(0, self.win.width)
+        y = random.uniform(0, self.win.height)
+        self.world.objects.append(FireWork(x,y)) 
 
     def on_mouse_press(self, x, y, button, mods):
         self.pos = x,y
