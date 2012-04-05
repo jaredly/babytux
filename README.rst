@@ -18,7 +18,7 @@ Baby TUX requires:
 
 * Python (tested on 2.7.2)
 
-* Pyglet_ (a cross-platform windowing and multimedia library for Python)
+* Pyglet_ (a cross-platform OpenGL based windowing and multimedia library for Python)
 
 * Rabbyt_ (a fast 2D sprite engine using OpenGL)
 
