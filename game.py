@@ -115,8 +115,7 @@ class Main(app.App):
             else:
                 if self.key_buffer[-1] == pyglet.window.key.ESCAPE:
                     sys.exit(0)
-        #if symbol == pyglet.window.key.ESCAPE:
-        #    sys.exit(0)
+
         try:
             s = chr(symbol)
         except (ValueError, OverflowError):
