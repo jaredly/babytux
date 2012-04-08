@@ -120,16 +120,16 @@ class Main(app.App):
         try:
             s = chr(symbol)
         except (ValueError, OverflowError):
-            # We do this to deal with <ENTER>, <ESC>, <SHIFT>, <F1-F12>, <ALT>,
-            # <CTRL>, etc.
-            self.make_animations() 
-            return
+            # Deal with <ENTER>, <ESC>, <SHIFT>, <F1-F12>, <ALT>, unicode
+            # character, etc. For our purpose, change it to a period
+            s = '.'
+            pass
 
         if s in string.ascii_letters:
             self.make_string(s.upper())
         elif s in string.digits:
             self.make_string(s)
-        else: # work with space, puncutations, etc
+        else: # work with our ValueError and if user enters space, puncutations, etc
             self.make_animations()
 
     def make_string(self, string):
