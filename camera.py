@@ -41,4 +41,3 @@ class Camera(object):
         gluOrtho2D(0, self.win.width, 0, self.win.height)
 
 
-# vim: et sw=4 sts=4

@@ -187,4 +187,3 @@ def dst(x,y):
 if __name__=='__main__':
     Main().mainLoop()
 
-# vim: et sw=4 sts=4

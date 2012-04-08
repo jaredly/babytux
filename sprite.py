@@ -14,4 +14,3 @@ class Sprite(object):
         pass
 
 
-# vim: et sw=4 sts=4

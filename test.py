@@ -132,4 +132,3 @@ if __name__=='__main__':
     app.mainLoop()
 
 
-# vim: et sw=4 sts=4

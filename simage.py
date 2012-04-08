@@ -21,4 +21,3 @@ class SImage(sprite.Sprite):
         pass
 
 
-# vim: et sw=4 sts=4
