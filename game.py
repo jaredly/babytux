@@ -132,8 +132,7 @@ class Main(app.App):
             self.make_animations()
 
     def make_string(self, string):
-        x = random.uniform(0, self.win.width)
-        y = random.uniform(0, self.win.height)
+        x, y = get_xy_positions(self.win.width, self.win.height)
         s = SpriteText(self.ft, string)
         s.rgba = rcolor()
         s.x = rabbyt.lerp(x, random.uniform(0, self.win.width), dt=1)
@@ -149,8 +148,7 @@ class Main(app.App):
     def make_animations(self):
         # For now, we just have firework but later on, we can display
         # shapes, etc. 
-        x = random.uniform(0, self.win.width)
-        y = random.uniform(0, self.win.height)
+        x, y = get_xy_positions(self.win.width, self.win.height)
         self.world.objects.append(FireWork(x,y)) 
 
     def on_mouse_press(self, x, y, button, mods):
@@ -182,6 +180,9 @@ def rcolor():
 
 def dst(x,y):
     return math.sqrt(x**2+y**2)
+
+def get_xy_positions(width, height):
+    return random.uniform(0, width), random.uniform(0, height)
 
 if __name__=='__main__':
     Main().mainLoop()
