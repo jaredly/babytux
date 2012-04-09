@@ -40,7 +40,7 @@ class FireWork(sprite.Sprite):
         for i in range(num):
             ang = i*by
             rad = ang / 180.0 * math.pi
-            s = simage.SImage('wedge.png', x, y)
+            s = simage.SImage('res/wedge.png', x, y)
             s.sp.x = rabbyt.lerp(end=math.cos(rad)*dst*fscale+x, dt=dt)
             s.sp.y = rabbyt.lerp(end=math.sin(rad)*dst*fscale+y, dt=dt)
             '''cool things:
@@ -166,7 +166,7 @@ class Main(app.App):
             self.pos = x,y
 
     def add(self, x, y):
-        s = SImage('ring.png', x, y)
+        s = SImage('res/ring.png', x, y)
         s.sp.scale = rabbyt.lerp(start=.1, end=2, dt=1)
         s.sp.alpha = rabbyt.lerp(end=0, dt=1)
         self.world.objects.append(s)
