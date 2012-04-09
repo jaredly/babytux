@@ -136,9 +136,8 @@ class Main(app.App):
         clock.schedule_once(tmp, 2)
 
     def make_shape_animations(self):
-        # For now, we are just going to display a circle but we eventually want different coloured shape
         x, y = get_xy_positions(self.win.width, self.win.height)
-        s = simage.SImage('res/circle.png', x, y)
+        s = simage.SImage(get_random_image(), x, y)
         s.sp.x = rabbyt.lerp(end=random.uniform(0, self.win.width), dt=1)
         s.sp.y = rabbyt.lerp(end=random.uniform(0, self.win.height), dt=1)
         s.sp.rot = rabbyt.lerp(start=0, end=360, dt=1)
@@ -191,6 +190,15 @@ def get_rotation(choice, ang, dt):
         return rabbyt.lerp(ang, ang - 90.0, dt=dt/2)
     else: 
         return rabbyt.lerp(ang + 90, ang - 90.0, dt=dt/2)
+
+def get_random_image():
+    choice = random.randint(1, 3)
+    if choice == 1:
+        return 'res/circle.png'
+    elif choice == 2:
+        return 'res/triangle.png'
+    else:
+        return 'res/square.png'
 
 if __name__=='__main__':
     Main().mainLoop()
