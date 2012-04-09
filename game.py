@@ -74,6 +74,7 @@ class FireWork(sprite.Sprite):
         for i in self.images:
             i.draw()
 
+
 class SpriteText(rabbyt.BaseSprite):
     def __init__(self, ft, text="", *args, **kwargs):
         rabbyt.BaseSprite.__init__(self, *args, **kwargs)
@@ -129,7 +130,7 @@ class Main(app.App):
         elif s in string.digits:
             self.make_string(s)
         else: # work with our ValueError and if user enters space, puncutations, etc
-            self.make_animations()
+            self.make_shape_animations()
 
     def make_string(self, string):
         x, y = get_xy_positions(self.win.width, self.win.height)
@@ -145,11 +146,17 @@ class Main(app.App):
             clock.schedule_once(lambda dt:self.world.objects.remove(s),2)
         clock.schedule_once(tmp, 2)
 
-    def make_animations(self):
-        # For now, we just have firework but later on, we can display
-        # shapes, etc. 
+    def make_shape_animations(self):
+        # For now, we are just going to display a circle but we eventually want different coloured shape
         x, y = get_xy_positions(self.win.width, self.win.height)
-        self.world.objects.append(FireWork(x,y)) 
+        s = simage.SImage('res/ring.png', x, y)
+        s.sp.x = rabbyt.lerp(end=100, dt=1)
+        s.sp.y = rabbyt.lerp(end=100, dt=1)
+        s.sp.rot = rabbyt.lerp(start=0, end=360, dt=1)
+        s.sp.scale = rabbyt.lerp(.25, 1, dt=1)
+        self.world.objects.append(s)
+        clock.schedule_once(lambda dt:self.world.objects.remove(s), 1)
+
 
     def on_mouse_press(self, x, y, button, mods):
         self.pos = x,y
