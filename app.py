@@ -29,7 +29,7 @@ class Hud(object):
         glLoadIdentity();
         self.text.draw()
         self.help.draw()
-        self.fps.draw()
+        if __debug__: self.fps.draw()
 
 class App(object):
 
