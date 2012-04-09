@@ -149,9 +149,9 @@ class Main(app.App):
     def make_shape_animations(self):
         # For now, we are just going to display a circle but we eventually want different coloured shape
         x, y = get_xy_positions(self.win.width, self.win.height)
-        s = simage.SImage('res/ring.png', x, y)
-        s.sp.x = rabbyt.lerp(end=100, dt=1)
-        s.sp.y = rabbyt.lerp(end=100, dt=1)
+        s = simage.SImage('res/circle.png', x, y)
+        s.sp.x = rabbyt.lerp(end=random.uniform(0, self.win.width), dt=1)
+        s.sp.y = rabbyt.lerp(end=random.uniform(0, self.win.height), dt=1)
         s.sp.rot = rabbyt.lerp(start=0, end=360, dt=1)
         s.sp.scale = rabbyt.lerp(.25, 1, dt=1)
         self.world.objects.append(s)
