@@ -2,14 +2,9 @@
 
 import random
 import rabbyt
-import simage
-import sprite
-
-import string
-import math
-import time
-import sys
-
+from simage import SImage, SImageStatic
+from sprite import Sprite, SpriteText
+import string, math, time, sys
 import app
 
 import pyglet
@@ -21,15 +16,7 @@ def normal(ang):
         ang -= 360
     return ang
 
-class SImage(simage.SImage):
-    def __init__(self, *a):
-        simage.SImage.__init__(self, *a)
-
-    def step(self):
-        return
-
-
-class FireWork(sprite.Sprite):
+class FireWork(Sprite):
     def __init__(self, x, y):
         dst = 50
         num = 10
@@ -41,7 +28,7 @@ class FireWork(sprite.Sprite):
         for i in range(num):
             ang = i*by
             rad = ang / 180.0 * math.pi
-            s = simage.SImage('res/wedge.png', x, y)
+            s = SImage('res/wedge.png', x, y)
             s.sp.x = rabbyt.lerp(end=math.cos(rad)*dst*fscale+x, dt=dt)
             s.sp.y = rabbyt.lerp(end=math.sin(rad)*dst*fscale+y, dt=dt)
             s.sp.rot = get_rotation(choice, ang, dt)
@@ -62,28 +49,6 @@ class FireWork(sprite.Sprite):
         if not self.on:return
         for i in self.images:
             i.draw()
-
-
-class SpriteText(rabbyt.BaseSprite):
-    def __init__(self, ft, text="", *args, **kwargs):
-        rabbyt.BaseSprite.__init__(self, *args, **kwargs)
-        self._text = font.Text(ft, text,
-            halign=font.Text.CENTER,
-            valign=font.Text.CENTER,
-            )
-
-    def set_text(self, text):
-        self._text.text = text
-
-    def render_after_transform(self):
-        self._text.color = self.rgba
-        self._text.draw()
-
-    def draw(self):
-        self.render()
-
-    def step(self):
-        pass
 
 class Main(app.App):
     def __init__(self):
@@ -137,7 +102,7 @@ class Main(app.App):
 
     def make_shape_animations(self):
         x, y = get_xy_positions(self.win.width, self.win.height)
-        s = simage.SImage(get_random_image(), x, y)
+        s = SImage(get_random_image(), x, y)
         s.sp.x = rabbyt.lerp(end=random.uniform(0, self.win.width), dt=1)
         s.sp.y = rabbyt.lerp(end=random.uniform(0, self.win.height), dt=1)
         s.sp.rot = rabbyt.lerp(start=0, end=360, dt=1)
@@ -161,7 +126,7 @@ class Main(app.App):
             self.pos = x,y
 
     def add(self, x, y):
-        s = SImage('res/ring.png', x, y)
+        s = SImageStatic('res/ring.png', x, y)
         s.sp.scale = rabbyt.lerp(start=.1, end=2, dt=1)
         s.sp.alpha = rabbyt.lerp(end=0, dt=1)
         self.world.objects.append(s)
