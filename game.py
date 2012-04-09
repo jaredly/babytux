@@ -36,6 +36,7 @@ class FireWork(sprite.Sprite):
         dt = .6
         fscale = 1
         by = 360.0/num
+        choice = random.randint(1, 5)
         self.images = []
         for i in range(num):
             ang = i*by
@@ -43,19 +44,7 @@ class FireWork(sprite.Sprite):
             s = simage.SImage('res/wedge.png', x, y)
             s.sp.x = rabbyt.lerp(end=math.cos(rad)*dst*fscale+x, dt=dt)
             s.sp.y = rabbyt.lerp(end=math.sin(rad)*dst*fscale+y, dt=dt)
-            '''cool things:
-            #1
-            s.sp.rot = ang - 90
-
-            #2
-            s.sp.rot = ang
-
-            #3
-            s.sp.rot = ang + 90
-            '''
-            s.sp.rot = rabbyt.lerp(ang, ang - 90.0, dt=dt/2)
-            s.sp.rot = rabbyt.lerp(ang + 90, ang - 90.0, dt=dt)
-            #s.sp.rot = ang - 90.0
+            s.sp.rot = get_rotation(choice, ang, dt)
             s.sp.scale = rabbyt.lerp(0,fscale,dt=dt)
             self.images.append(s)
         self.on = True
@@ -190,6 +179,18 @@ def dst(x,y):
 
 def get_xy_positions(width, height):
     return random.uniform(0, width), random.uniform(0, height)
+
+def get_rotation(choice, ang, dt):
+    if choice == 1:
+        return ang - 90
+    elif choice == 2:
+        return ang
+    elif choice == 3:
+        return ang + 90
+    elif choice == 4:
+        return rabbyt.lerp(ang, ang - 90.0, dt=dt/2)
+    else: 
+        return rabbyt.lerp(ang + 90, ang - 90.0, dt=dt/2)
 
 if __name__=='__main__':
     Main().mainLoop()
