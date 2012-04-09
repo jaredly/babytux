@@ -61,7 +61,6 @@ class App(object):
         while not self.win.has_exit:
             self.win.dispatch_events()
 
-            self.step()
             self.world.step()
 
             self.camera.worldProjection()
