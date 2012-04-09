@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 
+import random, math
 import rabbyt
 import pyglet 
 from pyglet import font
 from pyglet.gl import *
-import random, math
 
 class Sprite(object):
     def __init__(self, x, y, rot):

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-import rabbyt
 from sprite import Sprite
+import rabbyt
 import pyglet
 from pyglet.gl import *
 
