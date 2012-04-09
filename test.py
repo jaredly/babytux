@@ -9,8 +9,10 @@ from pyglet import clock, font, image, window
 from pyglet.gl import *
 
 import app,world,sprite,camera
+from simage import SImage
+from sprite import Sprite
 
-class Image(sprite.Sprite):
+class Image(Sprite):
     def __init__(self, image, x, y, size):
         self.x=x
         self.y=y
@@ -20,7 +22,7 @@ class Image(sprite.Sprite):
     def draw(self):
         self.image.blit(self.x, self.y, 0)
 
-class Triangle(sprite.Sprite):
+class Triangle(Sprite):
     
     def __init__(self, x, y, size, rot):
         self.x = x
@@ -56,7 +58,7 @@ class Triangle(sprite.Sprite):
         glEnd()
         '''
 
-class Circle(sprite.Sprite):
+class Circle(Sprite):
 
     def __init__(self, x, y, rad, color, lw, lc):
         self.x = x
@@ -100,13 +102,13 @@ class Main(app.App):
         super(Main, self).__init__()
         clock.schedule_interval(self.new_triangle, 0.25)
 
-        #car = SImage('ring.png',0,0)
+        #car = SImage('res/ring.png',0,0)
         #self.world.objects.append(car)
 
         w = self.win.width/10.0
         h = self.win.height/10.0
         for i in range(11):
-            s = SImage('ring.png', i*w, i*h)
+            s = SImage('res/ring.png', i*w, i*h)
             self.world.objects.append(s)
 
     def new_triangle(self, dt):
@@ -119,7 +121,7 @@ class Main(app.App):
         rot = uniform(0.0, 360.0)
         tri = pyglet.sprite.Sprite(self.rimg, x, y)
         tri.step = lambda:None
-        #tri = Image('ring.png', x, y, size)
+        #tri = Image('res/ring.png', x, y, size)
         #tri = Triangle(x, y, size, rot)
         #tri = Circle(x, y, size, (100,200,0,1), 0, 0)#Triangle(x, y, size, rot)
         self.world.objects.append(tri)
