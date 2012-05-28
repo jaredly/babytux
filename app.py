@@ -29,7 +29,7 @@ class Hud(object):
         glLoadIdentity();
         self.text.draw()
         self.help.draw()
-        self.fps.draw()
+        if __debug__: self.fps.draw()
 
 class App(object):
 
@@ -61,7 +61,6 @@ class App(object):
         while not self.win.has_exit:
             self.win.dispatch_events()
 
-            self.step()
             self.world.step()
 
             self.camera.worldProjection()
@@ -74,6 +73,3 @@ class App(object):
             self.win.flip()
 
 
-
-
-# vim: et sw=4 sts=4

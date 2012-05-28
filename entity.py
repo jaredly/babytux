@@ -27,4 +27,3 @@ class Entity(object):
         glEnd()
 
 
-# vim: et sw=4 sts=4

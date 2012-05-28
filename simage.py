@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 
+from sprite import Sprite
 import rabbyt
-import sprite
 import pyglet
 from pyglet.gl import *
 
-class SImage(sprite.Sprite):
+class SImage(Sprite):
 
     def __init__(self, image, x, y):
         self.sp = rabbyt.Sprite(image)
@@ -20,5 +20,10 @@ class SImage(sprite.Sprite):
         self.sp.rot += 10
         pass
 
+class SImageStatic(SImage):
+    def __init__(self, *a):
+        SImage.__init__(self, *a)
 
-# vim: et sw=4 sts=4
+    def step(self):
+        return
+

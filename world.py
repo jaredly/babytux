@@ -29,4 +29,3 @@ class World(object):
         for obj in self.objects:
             obj.draw()
 
-# vim: et sw=4 sts=4

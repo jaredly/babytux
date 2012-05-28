@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 
+import random, math
+import rabbyt
 import pyglet 
+from pyglet import font
 from pyglet.gl import *
 
 class Sprite(object):
@@ -13,5 +16,25 @@ class Sprite(object):
     def step(self):
         pass
 
+class SpriteText(rabbyt.BaseSprite):
+    def __init__(self, ft, text="", *args, **kwargs):
+        rabbyt.BaseSprite.__init__(self, *args, **kwargs)
+        self._text = font.Text(ft, text,
+            halign=font.Text.CENTER,
+            valign=font.Text.CENTER,
+            )
 
-# vim: et sw=4 sts=4
+    def set_text(self, text):
+        self._text.text = text
+
+    def render_after_transform(self):
+        self._text.color = self.rgba
+        self._text.draw()
+
+    def draw(self):
+        self.render()
+
+    def step(self):
+        pass
+
+
