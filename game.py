@@ -122,8 +122,4 @@ def get_random_image():
         return 'res/square.png'
 
 if __name__=='__main__':
-    try:
-        Main().mainLoop()
-    except:
-        pass
-
+    Main().mainLoop()
