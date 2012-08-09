@@ -59,17 +59,18 @@ class App(object):
 
     def mainLoop(self):
         while not self.win.has_exit:
-            self.win.dispatch_events()
+            try:
+                self.win.dispatch_events()
 
-            self.world.step()
+                self.world.step()
 
-            self.camera.worldProjection()
-            self.world.draw()
+                self.camera.worldProjection()
+                self.world.draw()
 
-            self.camera.hudProjection()
-            self.hud.draw()
+                self.camera.hudProjection()
+                self.hud.draw()
 
-            clock.tick()
-            self.win.flip()
-
-
+                clock.tick()
+                self.win.flip()
+            except:
+                pass
