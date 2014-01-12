@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import pyglet
+import pyglet, sys
 from pyglet import window, clock, font, image
 from pyglet.gl import *
 
@@ -72,5 +72,7 @@ class App(object):
 
                 clock.tick()
                 self.win.flip()
+            except (SystemExit):
+                sys.exit(0)
             except:
                 pass
