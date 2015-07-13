@@ -2,6 +2,9 @@
 
 import string, math, time, sys, random
 
+import os
+import os.path
+
 from simage import SImage, SImageStatic
 from sprite import SpriteText
 from firework import FireWork
@@ -10,6 +13,9 @@ import app
 import rabbyt
 import pyglet
 from pyglet import clock, font
+
+IMAGES = []
+
 
 def normal(ang):
     ang %= 360
@@ -113,13 +119,13 @@ def get_xy_positions(width, height):
     return random.uniform(0, width), random.uniform(0, height)
 
 def get_random_image():
-    choice = random.randint(1, 3)
-    if choice == 1:
-        return 'res/circle.png'
-    elif choice == 2:
-        return 'res/triangle.png'
-    else:
-        return 'res/square.png'
+    return random.choice(IMAGES)
+
+def init_image_resources():
+    for dirpath, dirnames, filenames in os.walk("res"):
+        for filename in [f for f in filenames if f.endswith(".png")]:
+            IMAGES.append(os.path.join(dirpath, filename))
 
 if __name__=='__main__':
+    init_image_resources()
     Main().mainLoop()
