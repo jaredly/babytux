@@ -16,11 +16,11 @@ Dependencies
 
 Baby TUX requires:
 
-* Python (tested on 2.7.2)
+* Python (tested on 3.6.8)
 
 * Pyglet_ (a cross-platform OpenGL based windowing and multimedia library for Python)
 
-* Rabbyt_ (a fast 2D sprite engine using OpenGL)
+* Rabbyt_ (a fast 2D sprite engine using OpenGL. Use the Python 3 version by Ryex)
 
 
 If you are running this on a Debian based Linux disto, you will need to install: python-dev, mesa-common-dev, and libglu1-mesa-dev
@@ -33,4 +33,4 @@ To run the app, enter: *python game.py*
 .. _babysmash: http://www.hanselman.com/babysmash/
 .. _alphababy: http://alphababy.sourceforge.net/
 .. _Pyglet: http://www.pyglet.org/
-.. _Rabbyt: http://arcticpaint.com/projects/rabbyt/
+.. _Rabbyt: https://github.com/Ryex/Rabbyt
