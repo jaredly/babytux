@@ -36,6 +36,7 @@ class App(object):
     def __init__(self):
         self.world = World()
         self.win = pyglet.window.Window(fullscreen=True, vsync=True)
+        self.win.set_exclusive_keyboard()
 
         for i in dir(self):
             if i.startswith('on_'):
