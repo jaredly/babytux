@@ -14,6 +14,10 @@ Animations appear when moving the mouse, clicking, or typing.
 Dependencies
 ------------
 
+.. code-block:: bash
+
+    pip3 install -r requirements.txt
+
 Baby TUX requires:
 
 * Python (tested on 3.6.8)
